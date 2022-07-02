@@ -6,7 +6,13 @@ public class PlayerController : MonoBehaviour
 {
     public CharacterController controller;
     public Vector3 direction;
-    public float forwardSpeed;
+    public float forwardSpeed; 
+
+    public int desiredLine = 1; //Linea actual, 0, 1 y 2 para izquierda, centro y derecha respectivamente
+    public float laneDistance = 4; //Distancia entre lineas
+
+    public float Gravity = -10;
+    public float jumpForce = 6;
 
     void Start()
     {
@@ -17,10 +23,66 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         direction.z = forwardSpeed;
+
+        //Obtener los inputs  
+        if(Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            desiredLine += 1;
+            if (desiredLine > 2)
+            {
+                desiredLine = 2;
+            } 
+        }
+
+        if(Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            desiredLine -= 1;
+            if (desiredLine < 0)
+            {
+                desiredLine = 0;
+            } 
+        }
+
+        if (controller.isGrounded)
+        {
+            direction.y = -1;
+            if( Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space) )
+            {
+                Jump(jumpForce);
+            }
+        }else {
+             direction.y += Gravity * Time.deltaTime;
+        }
+
+
+
+        //Debug.Log("Forward: " + (transform.forward).ToString() + " UP: " + (transform.up).ToString());
+        Vector3 targetPosition = transform.position.z * transform.forward + transform.position.y * transform.up;
+
+
+        switch(desiredLine)
+        {
+            case 0:
+                targetPosition += Vector3.left * laneDistance; 
+                break;
+                           
+            case 2:
+                targetPosition += Vector3.right * laneDistance; 
+                break;
+
+        }
+
+        transform.position = Vector3.Lerp(transform.position,targetPosition,80*Time.deltaTime);
+
     }
 
     void FixedUpdate()
     {
         controller.Move(direction * Time.fixedDeltaTime);   
+    }
+
+    public void Jump(float jumpValue)
+    {
+        direction.y = jumpValue;
     }
 }
