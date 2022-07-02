@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
     public float Gravity = -10;
     public float jumpForce = 6;
+    public bool canJump = true;
 
     void Start()
     {
