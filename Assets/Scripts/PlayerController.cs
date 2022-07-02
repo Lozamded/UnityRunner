@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerController : MonoBehaviour
 {
+    public GameObject LevelManager;
     public CharacterController controller;
     public Vector3 direction;
     public float forwardSpeed; 
@@ -16,7 +18,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        
+    
     }
 
     // Update is called once per frame
@@ -25,7 +27,7 @@ public class PlayerController : MonoBehaviour
         direction.z = forwardSpeed;
 
         //Obtener los inputs  
-        if(Input.GetKeyDown(KeyCode.RightArrow))
+        if(Input.GetKeyDown(KeyCode.RightArrow) || TouchManager.swipeRight)
         {
             desiredLine += 1;
             if (desiredLine > 2)
@@ -34,7 +36,7 @@ public class PlayerController : MonoBehaviour
             } 
         }
 
-        if(Input.GetKeyDown(KeyCode.LeftArrow))
+        if(Input.GetKeyDown(KeyCode.LeftArrow)  || TouchManager.swipeLeft )
         {
             desiredLine -= 1;
             if (desiredLine < 0)
@@ -46,7 +48,7 @@ public class PlayerController : MonoBehaviour
         if (controller.isGrounded)
         {
             direction.y = -1;
-            if( Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space) )
+            if( Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space) || TouchManager.swipeUp)
             {
                 Jump(jumpForce);
             }
@@ -72,8 +74,16 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        transform.position = Vector3.Lerp(transform.position,targetPosition,80*Time.deltaTime);
-
+        //transform.position = Vector3.Lerp(transform.position,targetPosition,80*Time.deltaTime);
+        //controller.center = controller.center;
+        Vector3 diff = targetPosition - transform.position;
+        Vector3 moveDir = diff.normalized * 25 * Time.deltaTime;
+        if(moveDir.sqrMagnitude < diff.sqrMagnitude)
+        {
+            controller.Move(moveDir);
+        }else {
+            controller.Move(diff);
+        }
     }
 
     void FixedUpdate()
@@ -84,5 +94,14 @@ public class PlayerController : MonoBehaviour
     public void Jump(float jumpValue)
     {
         direction.y = jumpValue;
+    }
+
+    public void OnControllerColliderHit(ControllerColliderHit hit) 
+    {
+        if ( (hit.transform.tag).ToLower() == "obstacles")
+        {
+            Debug.Log("choque un Obstaculo");
+            LevelManager.GetComponent<LevelManager>().setGameOver();
+        }   
     }
 }
