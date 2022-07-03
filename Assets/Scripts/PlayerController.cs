@@ -23,10 +23,13 @@ public class PlayerController : MonoBehaviour
 
     public Animator animator;
 
+    public GameObject Audio;
+
+    public bool Alive = true;
 
     void Start()
     {
-        // animator.set
+       Alive = true;
     }
 
     // Update is called once per frame
@@ -75,7 +78,7 @@ public class PlayerController : MonoBehaviour
             if( (Input.GetKeyDown(KeyCode.DownArrow) || TouchManager.swipeDown) &&  sliding == false)
             {
 
-                StartCoroutine( Slide());
+                StartCoroutine( Slide() );
             }
 
         }else {
@@ -122,13 +125,18 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        controller.Move(direction * Time.deltaTime);  //Mover al player
+        if (Alive)
+        {
+            controller.Move(direction * Time.deltaTime);  //Mover al player
+        }
+           
 
     }
 
 
     public void Jump(float jumpValue)
     {
+        Audio.GetComponent<AudioManager>().PlaySfx("jump");
         direction.y = jumpValue;
     }
 
@@ -143,13 +151,14 @@ public class PlayerController : MonoBehaviour
 
             }else
             {
-                LevelManager.GetComponent<LevelManager>().setGameOver();
+                StartCoroutine( callGameOver() );
             }
         }   
     }
 
     public IEnumerator Slide()
     {
+         Audio.GetComponent<AudioManager>().PlaySfx("slide");
         //inicio Slide
         Debug.Log("InicioSlide");
         animator.SetBool("isSliding",true);
@@ -161,5 +170,18 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isSliding",false);
         Debug.Log("TerminoSlide");
         //Fin Slide
+    }
+
+     public IEnumerator callGameOver()
+    {
+        if (Alive)
+        {
+            Alive = false;
+            Audio.GetComponent<AudioManager>().PlaySfx("hit");
+        }
+        yield return new WaitForSeconds(1.12f);
+        Audio.GetComponent<AudioManager>().PlaySfx("ouch");
+        LevelManager.GetComponent<LevelManager>().setGameOver();
+
     }
 }
