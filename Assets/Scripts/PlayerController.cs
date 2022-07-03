@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public Vector3 direction;
     public float forwardSpeed; 
     public float maxSpeed = 24;
+    public float speedIncreaser = 0.024f;
 
     public int desiredLine = 1; //Linea actual, 0, 1 y 2 para izquierda, centro y derecha respectivamente
     public float laneDistance = 4; //Distancia entre lineas
@@ -41,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
         if (forwardSpeed <  maxSpeed)
         {
-            forwardSpeed += 0.024f  * Time.deltaTime;
+            forwardSpeed += speedIncreaser  * Time.deltaTime;
         }
     
 
