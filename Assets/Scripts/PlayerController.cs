@@ -47,30 +47,32 @@ public class PlayerController : MonoBehaviour
     
 
 
-        //Obtener los inputs  
-        if(Input.GetKeyDown(KeyCode.RightArrow) || TouchManager.swipeRight)
-        {
-            desiredLine += 1;
-            if (desiredLine > 2)
-            {
-                desiredLine = 2;
-            } 
-        }
-
-        if(Input.GetKeyDown(KeyCode.LeftArrow)  || TouchManager.swipeLeft )
-        {
-            desiredLine -= 1;
-            if (desiredLine < 0)
-            {
-                desiredLine = 0;
-            } 
-        }
 
         animator.SetBool("isGrounded",controller.isGrounded);
 
         if (controller.isGrounded)
         {
             animator.SetBool("isJumping",false);
+
+            //Obtener los inputs  
+            if((Input.GetKeyDown(KeyCode.RightArrow) || TouchManager.swipeRight ) && sliding == false)
+            {
+                desiredLine += 1;
+                if (desiredLine > 2)
+                {
+                    desiredLine = 2;
+                } 
+            }
+
+            if( (Input.GetKeyDown(KeyCode.LeftArrow)  || TouchManager.swipeLeft)  && sliding == false )
+            {
+                desiredLine -= 1;
+                if (desiredLine < 0)
+                {
+                    desiredLine = 0;
+                } 
+            }
+
             if( (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space) || TouchManager.swipeUp) &&  sliding == false )
             {
                 Jump(jumpForce);
@@ -143,18 +145,19 @@ public class PlayerController : MonoBehaviour
 
     public void OnControllerColliderHit(ControllerColliderHit hit) 
     {
-        if ( (hit.transform.tag).ToLower() == "obstacles")
+        if ( (hit.transform.tag).ToLower() == "obstacles" )
         {
-            Debug.Log("choque un Obstaculo");
+            StartCoroutine( callGameOver() );
+        }else if( (hit.transform.tag).ToLower() == "obstacleshigh" ){
+
             if(sliding)
             {
                 Physics.IgnoreCollision(hit.collider,controller);
 
-            }else
-            {
+            }else{
                 StartCoroutine( callGameOver() );
             }
-        }   
+        }
     }
 
     public IEnumerator Slide()
