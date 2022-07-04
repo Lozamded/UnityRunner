@@ -6,7 +6,8 @@ public class SpringController : MonoBehaviour
 {
     public int power = 16;
     public Animator animator;
-    private bool active = false;
+    public bool active = false;
+    public float recoveryTime = 0.24f;
 
      public void OnTriggerEnter(Collider other) 
     {
@@ -18,6 +19,13 @@ public class SpringController : MonoBehaviour
             active = true;
             FindObjectOfType<AudioManager>().PlaySfx("spring");
             other.gameObject.GetComponent<PlayerController>().Jump(power);
+            StartCoroutine( reset() );
         }   
+    }
+
+    public IEnumerator reset()
+    {
+        yield return new WaitForSeconds(recoveryTime);
+        active = false;
     }
 }

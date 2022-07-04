@@ -11,7 +11,7 @@ public class CoinController : MonoBehaviour
         {
             FindObjectOfType<AudioManager>().PlaySfx("coin");
             LevelManager.CoinAmount += 1;
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }   
     }
 }

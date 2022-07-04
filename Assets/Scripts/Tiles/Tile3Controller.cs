@@ -39,4 +39,20 @@ public class Tile3Controller : MonoBehaviour
         }
         
     }
+
+    public void Reset()
+    {
+        foreach (GameObject road in roads)
+        {
+            road.SetActive(true);
+        }
+
+        foreach (GameObject starsGroup in roadStars)
+        {
+            starsGroup.SetActive(true);
+        }
+
+        Start();
+
+    }
 }

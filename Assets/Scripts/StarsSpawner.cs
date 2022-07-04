@@ -23,4 +23,13 @@ public class StarsSpawner : MonoBehaviour
         }
     }
 
+    public void Reset()
+    {
+        foreach (GameObject starsGroup in StarsGroups)
+        {
+            starsGroup.SetActive(true);
+        }
+        Start();
+    }
+
 }
