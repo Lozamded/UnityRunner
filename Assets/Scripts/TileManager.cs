@@ -19,7 +19,7 @@ public class TileManager : MonoBehaviour
         SpawnTile(0);
         for(int i = 1; i < tilesToItearte; i++ )
         {
-            SpawnTile(Random.Range(0, tilesObjects.Length));
+            SpawnTile(Random.Range(1, tilesObjects.Length));
             //activeTiles.app
         }
 

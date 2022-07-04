@@ -4,22 +4,39 @@ using UnityEngine;
 
 public class Tile3Controller : MonoBehaviour
 {
-    public GameObject[] springs;
+    public GameObject[] roads;
+    public GameObject[] roadStars;
 
     void Start()
     {
-        int choosedSpring = Random.Range(0, 3);
+        int numberOfRoads = Random.Range(1, 3);
+        int choosedRoad = Random.Range(0, 3);
         //Debug.Log(choosedSpring);
 
-        
-        for(int i = 0; i < 3; i++ )
+        switch (numberOfRoads)
         {
+            case 1:
+                for(int i = 0; i < 3; i++ )
+                {
 
-            if (i != choosedSpring)
-            {
-                springs[i].SetActive(false);
-            }
+                    if (i != choosedRoad)
+                    {
+                        roads[i].SetActive(false);
+                        roadStars[i].SetActive(false);
+                    }
+                }
+            break;
+            case 2:
+                for(int i = 0; i < 3; i++ )
+                {
+                    roadStars[i].SetActive(false);
+                    if (i == choosedRoad)
+                    {
+                        roads[i].SetActive(false);
+                    }
+                }
+            break;
         }
+        
     }
-
 }
