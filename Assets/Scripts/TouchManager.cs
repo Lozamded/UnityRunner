@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TouchManager : MonoBehaviour
+public class TouchManager : MonoBehaviour //Controlador Tactil 
 {
     public static bool tap, swipeLeft, swipeRight, swipeUp, swipeDown;
     private bool isDraging = false;

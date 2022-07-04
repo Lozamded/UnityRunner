@@ -5,52 +5,52 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : MonoBehaviour //Administrador del nivel
 {
 
-    public static int CoinAmount;
-    public bool GameOver = false;
-    public GameObject player;
-    public GameObject gameOverPanel;
-    public TextMeshProUGUI starsText;
-    public bool Pause = false;
+    public static int CoinAmount; //Canitdad de estrellas
+    public bool GameOver = false; //Indicador de Game Over
+    public GameObject player; // player
+    public GameObject gameOverPanel; //Panel del Game Over
+    public TextMeshProUGUI starsText; //Texto de conteo estrellas 
+    public bool Pause = false; //indicador de pausa
 
-    public GameObject Audio;
+    public GameObject Audio; //Administrador de sonidos
 
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = 1;
-        CoinAmount = 0;
+        Time.timeScale = 1; //Escala de tiempo normal
+        CoinAmount = 0; //no hay estrellas
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        starsText.text = "Stars: " + CoinAmount.ToString();
+        starsText.text = "Stars: " + CoinAmount.ToString(); //Actualizar texto de estrellas
     }
 
-    public void setGameOver()
+    public void setGameOver() //Activar pantalla de game over y reproducir canción
     {
         GameOver = true;
-        Time.timeScale = 0;
+        Time.timeScale = 0; //Detener el tiempo
         gameOverPanel.SetActive(true);
-        Audio.GetComponent<AudioManager>().StopSong("Main");
+        Audio.GetComponent<AudioManager>().StopSong("Main"); //Detener canción del nivel
         Audio.GetComponent<AudioManager>().PlaySfx("gameover");
     }
 
-    public void RestartLevel()
+    public void RestartLevel() //Reiniciar el nivel
     {
         GameOver = false;
         SceneManager.LoadScene("Nivel");
     }
 
-    public void PauseGame()
+    public void PauseGame() //Verificar pausa
     {
         switch(Pause)
         {
-            case true:
+            case true: //Si ya esta pausado saco la pausa
                 Pause = false;
                 Time.timeScale = 1;
                 Audio.GetComponent<AudioManager>().PlaySfx("unpause");
@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour
                 
             break;
 
-            case false:
+            case false: //Si no esta pausado activo la pausa
                 Pause = true;
                 Time.timeScale = 0;
                 Audio.GetComponent<AudioManager>().PauseSong("Main");
@@ -67,7 +67,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void AddCoins(int number)
+    public void AddCoins(int number) //Añadir estrella
     {
         CoinAmount += number;
         Debug.Log(CoinAmount);

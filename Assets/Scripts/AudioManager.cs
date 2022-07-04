@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : MonoBehaviour //Administrador de audios
 {
-    public Sound[] songs;
-    public Sound[] sfxs;
+    public Sound[] songs; //Lista de canciones
+    public Sound[] sfxs; //Lista de sonidos
 
-    // Start is called before the first frame update
-    void Start()
+    void Start()//Añado el comonente de origen a todos los audios
     {
-        foreach (Sound sound in songs)
+        foreach (Sound sound in songs) 
         {
             sound.source = gameObject.AddComponent<AudioSource>();
             sound.source.clip = sound.clip;
@@ -24,14 +23,14 @@ public class AudioManager : MonoBehaviour
             sfx.source.loop = sfx.loop;
         }
 
-        PlaySound("song","Main");
+        PlaySound("song","Main"); //reproducir canción del nivel
     }
 
-    public void PlaySound(string type,string name)
+    public void PlaySound(string type,string name) //Reproductor universal
     {
         Sound[] choosedArray = songs;
 
-        switch (type)
+        switch (type) //Verificar si es cancion o efecto
         {
             case "song":
                 choosedArray = songs;
@@ -42,7 +41,7 @@ public class AudioManager : MonoBehaviour
 
         }
 
-        foreach (Sound sound in choosedArray)
+        foreach (Sound sound in choosedArray) //Buscar y reproducir sonido
         {
             if( sound.soundName == name )
             {
@@ -51,9 +50,9 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySong(string name)
+    public void PlaySong(string name) //reproducir canción
     {
-        foreach (Sound song in songs)
+        foreach (Sound song in songs) //Buscar y reproducir sonido
         {
             if( song.soundName == name )
             {
@@ -62,9 +61,9 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySfx(string name)
+    public void PlaySfx(string name) //reproducir efecto
     {
-        foreach (Sound sfx in sfxs)
+        foreach (Sound sfx in sfxs) //Buscar y reproducir sonido
         {
             if( sfx.soundName == name )
             {
@@ -73,9 +72,9 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PauseSong(string name)
+    public void PauseSong(string name) //Pausar canción
     {
-        foreach (Sound song in songs)
+        foreach (Sound song in songs) //Buscar y pausar sonido
         {
             if( song.soundName == name )
             {
@@ -84,9 +83,9 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void ResumeSong(string name)
+    public void ResumeSong(string name) //Reanudar canción
     {
-        foreach (Sound song in songs)
+        foreach (Sound song in songs) //Buscar y reaunudar sonido
         {
             if( song.soundName == name )
             {
@@ -96,9 +95,9 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    public void StopSong(string name)
+    public void StopSong(string name) //Detener canción
     {
-        foreach (Sound song in songs)
+        foreach (Sound song in songs) //Buscar y detener sonido
         {
             if( song.soundName == name )
             {
@@ -106,7 +105,6 @@ public class AudioManager : MonoBehaviour
             }
         }
     }
-
 
 
 }
